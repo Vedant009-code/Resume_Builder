@@ -8,7 +8,7 @@ import ProjectsForm from "@/components/ProjectsForm";
 import SkillsForm from "@/components/SkillsForm";
 import OthersForm from "@/components/OthersForm";
 
-export default function StepContent() {
+export default function StepContent({ setShowFullPreview }) {
   const { currentStep } = useStepper();
 
   switch (currentStep) {
@@ -22,13 +22,13 @@ export default function StepContent() {
       return <ExperienceForm />;
 
     case 3:
-      return <ProjectsForm />; // ✅ PROJECTS
+      return <ProjectsForm />;
 
     case 4:
       return <SkillsForm />;
 
     case 5:
-      return <OthersForm />;
+      return <OthersForm setShowFullPreview={setShowFullPreview} />;
 
     default:
       return null;

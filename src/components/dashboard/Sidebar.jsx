@@ -11,7 +11,6 @@ export default function Sidebar() {
             "Dashboard",
             "My Resumes",
             "Create Resume",
-            "Shortlister",
             "Templates",
             "Profile",
           ].map((item) => (

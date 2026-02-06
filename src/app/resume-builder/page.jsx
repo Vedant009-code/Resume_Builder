@@ -1,57 +1,87 @@
 "use client";
 
-import { StepperProvider } from "@/context/ResumeStepperContext";
+import { useState } from "react";
 import Stepper from "@/components/Stepper";
 import StepContent from "@/components/StepContent";
 import ResumePreview from "@/components/ResumePreview";
-import { useSearchParams } from "next/navigation";
+
+import { StepperProvider } from "@/context/ResumeStepperContext";
+import { ResumeDataProvider } from "@/context/ResumeDataContext";
 
 export default function ResumeBuilderPage() {
-  const searchParams = useSearchParams();
-  const selectedTemplate = searchParams.get("template") || "modern";
+  const [showPreview, setShowPreview] = useState(false);
+  const [showFullPreview, setShowFullPreview] = useState(false);
 
   return (
-    <StepperProvider>
-      <div className="min-h-screen bg-gray-100">
+    <ResumeDataProvider>
+      <StepperProvider>
 
-        {/* Top Bar */}
-        <header className="flex items-center justify-between px-6 py-4 bg-white border-b">
-          <a href="/dashboard">
-            <button className="text-sm text-gray-600 hover:text-black">
+        <div className="min-h-screen bg-gray-100">
+
+          {/* HEADER */}
+          <header className="flex items-center justify-between px-6 py-4 bg-white border-b">
+           {/*<a
+              href="/dashboard"
+              className="text-sm text-gray-600 hover:text-black"
+            >
               ← Back to Dashboard
+            </a>*/}
+
+            <h2 className="font-semibold">Resume Builder</h2>
+
+            <button
+              onClick={() => setShowPreview(prev => !prev)}
+              className="bg-black text-white px-4 py-2 rounded-lg text-sm"
+            >
+              {showPreview ? "Hide Preview" : "Live Preview"}
             </button>
-          </a>
+          </header>
 
-          <h2 className="font-semibold">
-            Resume Builder ({selectedTemplate})
-          </h2>
+          {/* MAIN CONTENT */}
+          <div className="grid grid-cols-12 gap-6 p-6">
 
-          <div className="flex gap-3">
-            <button className="text-sm border px-4 py-2 rounded-lg">
-              Save Draft
-            </button>
-            <button className="text-sm bg-black text-white px-4 py-2 rounded-lg">
-              Show Preview
-            </button>
+            {/* LEFT: FORM */}
+            <div className={showPreview ? "col-span-7" : "col-span-12"}>
+              <Stepper />
+              <StepContent setShowFullPreview={setShowFullPreview} />
+            </div>
+
+            {/* RIGHT: SIDE PREVIEW */}
+            {showPreview && (
+              <div className="col-span-5">
+                <ResumePreview />
+              </div>
+            )}
+
           </div>
-        </header>
-
-        {/* Main Content */}
-        <div className="grid grid-cols-12 gap-6 p-6">
-
-          {/* Left Section */}
-          <div className="col-span-7">
-            <Stepper />
-            <StepContent />
-          </div>
-
-          {/* Right Section */}
-          <div className="col-span-5">
-            <ResumePreview template={selectedTemplate} />
-          </div>
-
         </div>
-      </div>
-    </StepperProvider>
+
+        {/* FULL SCREEN PREVIEW MODAL */}
+        {showFullPreview && (
+          <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center">
+            <div className="bg-gray-100 w-[95%] h-[95%] rounded-xl overflow-hidden">
+
+              <div className="flex justify-between items-center px-6 py-3 bg-white border-b">
+                <h2 className="font-semibold">Resume Preview</h2>
+                <button
+                  onClick={() => setShowFullPreview(false)}
+                  className="bg-black text-white px-4 py-2 rounded"
+                >
+                  Close ✕
+                </button>
+              </div>
+
+              <div className="p-6 h-[calc(100%-64px)] overflow-auto">
+                <div className="max-w-4xl mx-auto">
+                  <ResumePreview />
+                </div>
+              </div>
+
+            </div>
+          </div>
+        )}
+
+      </StepperProvider>
+    </ResumeDataProvider>
   );
 }

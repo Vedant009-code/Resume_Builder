@@ -1,65 +1,62 @@
 "use client";
 
 import { useState } from "react";
+import { useResumeData } from "@/context/ResumeDataContext";
 import { useStepper } from "@/context/ResumeStepperContext";
 
 export default function SkillsForm() {
+  const { resumeData, setResumeData } = useResumeData();
   const { nextStep, prevStep } = useStepper();
-  const [skill, setSkill] = useState("");
-  const [skills, setSkills] = useState([
-    "React",
-    "TypeScript",
-    "Node.js",
-    "Python",
-  ]);
+  const [skillInput, setSkillInput] = useState("");
 
   const addSkill = () => {
-    if (!skill.trim()) return;
-    setSkills([...skills, skill.trim()]);
-    setSkill("");
+    if (!skillInput.trim()) return;
+
+    setResumeData(prev => ({
+      ...prev,
+      skills: [...(prev.skills || []), skillInput.trim()], // ✅ SAFE
+    }));
+
+    setSkillInput("");
   };
 
-  const removeSkill = (index) => {
-    setSkills(skills.filter((_, i) => i !== index));
+  const removeSkill = index => {
+    setResumeData(prev => ({
+      ...prev,
+      skills: (prev.skills || []).filter((_, i) => i !== index), // ✅ SAFE
+    }));
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm">
-      <h2 className="text-xl font-semibold mb-6">Skills</h2>
+    <div className="bg-white p-6 rounded-lg border">
+      <h3 className="font-semibold mb-4">Skills</h3>
 
-      {/* Add Skills */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Add Skills
-        </label>
-
-        <div className="flex gap-3">
-          <input
-            value={skill}
-            onChange={(e) => setSkill(e.target.value)}
-            className="input flex-1"
-            placeholder="Enter a skill"
-          />
-          <button
-            onClick={addSkill}
-            className="bg-indigo-600 text-white px-5 rounded-lg text-sm flex items-center gap-1"
-          >
-            + Add
-          </button>
-        </div>
+      <div className="flex gap-2">
+        <input
+          className="input flex-1"
+          placeholder="Enter a skill"
+          value={skillInput}
+          onChange={e => setSkillInput(e.target.value)}
+        />
+        <button
+          onClick={addSkill}
+          className="bg-indigo-600 text-white px-4 rounded"
+        >
+          + Add
+        </button>
       </div>
 
-      {/* Skills Chips */}
-      <div className="flex flex-wrap gap-3 mb-3">
-        {skills.map((s, index) => (
+      {/* Skill Chips */}
+      <div className="flex flex-wrap gap-2 mt-4">
+        {(resumeData.skills || []).map((skill, index) => ( // ✅ SAFE
           <span
             key={index}
-            className="flex items-center gap-2 bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-lg text-sm"
+            className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm flex items-center gap-2"
           >
-            {s}
+            {skill}
             <button
               onClick={() => removeSkill(index)}
-              className="text-indigo-500 hover:text-indigo-700"
+              className="text-indigo-500 hover:text-red-500"
             >
               ×
             </button>
@@ -67,22 +64,16 @@ export default function SkillsForm() {
         ))}
       </div>
 
-      <p className="text-sm text-gray-500 mb-8">
-        Drag and drop to reorder skills
-      </p>
-
-      {/* Bottom Buttons */}
-      <div className="flex justify-between">
+      <div className="flex justify-between mt-6">
         <button
           onClick={prevStep}
-          className="border px-6 py-2 rounded-lg text-sm"
+          className="border px-4 py-2 rounded"
         >
           ← Back
         </button>
-
         <button
           onClick={nextStep}
-          className="bg-indigo-600 text-white px-6 py-2 rounded-lg text-sm"
+          className="bg-indigo-600 text-white px-5 py-2 rounded"
         >
           Next →
         </button>

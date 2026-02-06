@@ -1,86 +1,74 @@
 "use client";
 
+import { useResumeData } from "@/context/ResumeDataContext";
 import { useStepper } from "@/context/ResumeStepperContext";
 
 export default function ProjectsForm() {
+  const { resumeData, setResumeData } = useResumeData();
   const { nextStep, prevStep } = useStepper();
 
+  const project = resumeData.projects[0];
+
+  const update = (field, value) => {
+    setResumeData((prev) => ({
+      ...prev,
+      projects: [
+        {
+          ...prev.projects[0],
+          [field]: value,
+        },
+      ],
+    }));
+  };
+
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm">
-      <h2 className="text-xl font-semibold mb-6">Projects</h2>
+    <div className="bg-white rounded-xl p-6">
+      <h2 className="font-semibold mb-4">Projects</h2>
 
-      {/* Project Card */}
-      <div className="border rounded-xl p-6 mb-6">
-        <div className="space-y-5">
+      <div className="grid grid-cols-2 gap-4">
 
-          {/* Project Title */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Project Title
-            </label>
-            <input
-              className="input"
-              placeholder="E-commerce Platform"
-            />
-          </div>
+  <input
+    className="input col-span-2"
+    placeholder="Project Title"
+    value={project.title || ""}
+    onChange={(e) => update("title", e.target.value)}
+  />
 
-          {/* Description */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Description
-            </label>
-            <textarea
-              className="input h-28 resize-none"
-              placeholder="Built a full-stack e-commerce platform..."
-            />
-          </div>
+  <textarea
+    className="input col-span-2 h-28"
+    placeholder="Project Description"
+    value={project.description || ""}
+    onChange={(e) => update("description", e.target.value)}
+  />
 
-          {/* Tech Stack */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Tech Stack
-            </label>
-            <input
-              className="input"
-              placeholder="React, Node.js, MongoDB"
-            />
-          </div>
+  <input
+    className="input"
+    placeholder="Tech Stack (React, Node.js, MongoDB)"
+    value={project.tech || ""}
+    onChange={(e) => update("tech", e.target.value)}
+  />
 
-          {/* Link */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Link
-            </label>
-            <input
-              className="input"
-              placeholder="https://project-demo.com"
-            />
-          </div>
+  <input
+    className="input"
+    placeholder="Project Link"
+    value={project.link || ""}
+    onChange={(e) => update("link", e.target.value)}
+  />
 
-          {/* Remove */}
-          <button className="text-sm text-red-500 flex items-center gap-1">
-            ✕ Remove
-          </button>
-        </div>
-      </div>
+</div>
 
-      {/* Add Project */}
-      <button className="w-full border-2 border-dashed rounded-xl py-4 text-sm text-gray-600 hover:bg-gray-50">
-        + Add Project
-      </button>
 
-      {/* Bottom Buttons */}
-      <div className="flex justify-between mt-8">
+      <div className="flex justify-between mt-6">
         <button
           onClick={prevStep}
-          className="border px-6 py-2 rounded-lg text-sm"
+          className="border px-4 py-2 rounded-lg"
         >
           ← Back
         </button>
 
         <button
           onClick={nextStep}
-          className="bg-indigo-600 text-white px-6 py-2 rounded-lg text-sm"
+          className="bg-indigo-600 text-white px-6 py-2 rounded-lg"
         >
           Next →
         </button>

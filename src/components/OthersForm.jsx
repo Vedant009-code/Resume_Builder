@@ -1,77 +1,79 @@
 "use client";
 
-import { useState } from "react";
+import { useResumeData } from "@/context/ResumeDataContext";
 import { useStepper } from "@/context/ResumeStepperContext";
 
-export default function OthersForm() {
+export default function OthersForm({setShowFullPreview }) {
+  const { resumeData, setResumeData } = useResumeData();
   const { prevStep } = useStepper();
-  const [items, setItems] = useState([
-    "AWS Certified Solutions Architect",
-  ]);
 
-  const addItem = () => {
-    setItems([...items, ""]);
-  };
+  const certifications = resumeData.others || [""];
 
-  const updateItem = (index, value) => {
-    const updated = [...items];
+  const updateCert = (index, value) => {
+    const updated = [...certifications];
     updated[index] = value;
-    setItems(updated);
+
+    setResumeData(prev => ({
+      ...prev,
+      others: updated,
+    }));
   };
 
-  const removeItem = (index) => {
-    setItems(items.filter((_, i) => i !== index));
+  const addCert = () => {
+    setResumeData(prev => ({
+      ...prev,
+      others: [...(prev.others || []), ""],
+    }));
+  };
+
+  const removeCert = index => {
+    setResumeData(prev => ({
+      ...prev,
+      others: prev.others.filter((_, i) => i !== index),
+    }));
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm">
-      <h2 className="text-xl font-semibold mb-6">
+    <div className="bg-white rounded-xl p-6">
+      <h2 className="font-semibold mb-4">
         Certifications & Achievements
       </h2>
 
-      {/* List */}
-      <div className="space-y-4 mb-6">
-        {items.map((item, index) => (
-          <div
-            key={index}
-            className="flex items-center gap-3"
+      {certifications.map((cert, i) => (
+        <div key={i} className="flex gap-2 mb-3">
+          <input
+            className="input flex-1"
+            placeholder="AWS Certified Solutions Architect"
+            value={cert || ""}
+            onChange={e => updateCert(i, e.target.value)}
+          />
+          <button
+            onClick={() => removeCert(i)}
+            className="text-red-500 text-sm"
           >
-            <input
-              value={item}
-              onChange={(e) =>
-                updateItem(index, e.target.value)
-              }
-              className="input flex-1"
-              placeholder="Enter certification or achievement"
-            />
-            <button
-              onClick={() => removeItem(index)}
-              className="text-red-500 text-lg"
-            >
-              ×
-            </button>
-          </div>
-        ))}
-      </div>
+            ✕
+          </button>
+        </div>
+      ))}
 
-      {/* Add Button */}
       <button
-        onClick={addItem}
-        className="w-full border-2 border-dashed rounded-xl py-4 text-sm text-gray-600 hover:bg-gray-50 mb-8"
+        onClick={addCert}
+        className="text-indigo-600 text-sm mb-6"
       >
-        + Add Certification/Achievement
+        + Add Certification / Achievement
       </button>
 
-      {/* Bottom Buttons */}
       <div className="flex justify-between">
         <button
           onClick={prevStep}
-          className="border px-6 py-2 rounded-lg text-sm"
+          className="border px-4 py-2 rounded"
         >
           ← Back
         </button>
 
-        <button className="bg-green-600 text-white px-6 py-2 rounded-lg text-sm flex items-center gap-1">
+        <button 
+         onClick={() => setShowFullPreview(true)}
+        className="bg-green-600 text-white px-6 py-2 rounded">
           Preview Full Screen →
         </button>
       </div>

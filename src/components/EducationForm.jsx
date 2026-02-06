@@ -1,68 +1,75 @@
 "use client";
 
+import { useResumeData } from "@/context/ResumeDataContext";
 import { useStepper } from "@/context/ResumeStepperContext";
 
 export default function EducationForm() {
+  const { resumeData, setResumeData } = useResumeData();
   const { nextStep, prevStep } = useStepper();
 
+  const edu = resumeData.education?.[0] || {
+    degree: "",
+    college: "",
+    year: "",
+    gpa: "",
+  };
+
+  const update = (field, value) => {
+    setResumeData(prev => ({
+      ...prev,
+      education: [
+        {
+          ...(prev.education?.[0] || {}),
+          [field]: value,
+        },
+      ],
+    }));
+  };
+
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm">
-      <h2 className="text-xl font-semibold mb-6">Education</h2>
+    <div className="bg-white rounded-xl p-6">
+      <h2 className="font-semibold mb-4">Education</h2>
 
-      {/* Education Card */}
-      <div className="border rounded-xl p-5 mb-6">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="text-sm font-medium text-gray-700">
-              Degree
-            </label>
-            <input className="input mt-1" placeholder="Bachelor of Science" />
-          </div>
+      <div className="grid grid-cols-2 gap-4">
+        <input
+          className="input"
+          placeholder="Degree"
+          value={edu.degree || ""}
+          onChange={e => update("degree", e.target.value)}
+        />
 
-          <div>
-            <label className="text-sm font-medium text-gray-700">
-              College/University
-            </label>
-            <input className="input mt-1" placeholder="University of Example" />
-          </div>
+        <input
+          className="input"
+          placeholder="College / University"
+          value={edu.college || ""}
+          onChange={e => update("college", e.target.value)}
+        />
 
-          <div>
-            <label className="text-sm font-medium text-gray-700">
-              Year
-            </label>
-            <input className="input mt-1" placeholder="2018 - 2022" />
-          </div>
+        <input
+          className="input"
+          placeholder="Year (e.g. 2019 – 2023)"
+          value={edu.year || ""}
+          onChange={e => update("year", e.target.value)}
+        />
 
-          <div>
-            <label className="text-sm font-medium text-gray-700">
-              Grade/GPA
-            </label>
-            <input className="input mt-1" placeholder="3.8/4.0" />
-          </div>
-        </div>
-
-        <button className="text-sm text-red-500 mt-4 flex items-center gap-1">
-          ✕ Remove
-        </button>
+        <input
+          className="input"
+          placeholder="GPA / Grade"
+          value={edu.gpa || ""}
+          onChange={e => update("gpa", e.target.value)}
+        />
       </div>
 
-      {/* Add Education */}
-      <button className="w-full border-2 border-dashed rounded-xl py-4 text-sm text-gray-600 hover:bg-gray-50">
-        + Add Education
-      </button>
-
-      {/* Bottom Buttons */}
-      <div className="flex justify-between mt-8">
+      <div className="flex justify-between mt-6">
         <button
           onClick={prevStep}
-          className="border px-6 py-2 rounded-lg text-sm"
+          className="border px-4 py-2 rounded"
         >
           ← Back
         </button>
-
         <button
           onClick={nextStep}
-          className="bg-indigo-600 text-white px-6 py-2 rounded-lg text-sm"
+          className="bg-indigo-600 text-white px-6 py-2 rounded"
         >
           Next →
         </button>

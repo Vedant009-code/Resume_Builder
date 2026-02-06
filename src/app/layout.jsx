@@ -44,7 +44,7 @@ export default function RootLayout({ children }) {
                 <a className="hover:text-indigo-600" href="/resume-builder">Resume Builder</a>
                 {/*<a className="hover:text-indigo-600" href="#">Shortlister</a>*/}
                 <a className="hover:text-indigo-600" href="/templates">Templates</a>
-                <a className="hover:text-indigo-600" href="/login">Login</a>
+               {/* <a className="hover:text-indigo-600" href="/login">Login</a>*/}
               </div>
 
               
@@ -82,7 +82,7 @@ export default function RootLayout({ children }) {
                 <ul className="space-y-2 text-[14px] text-gray-400">
                   <li>Resume Builder</li>
                   <li>Templates</li>
-                  <li>Shortlister</li>
+                  
                 </ul>
               </div>
 

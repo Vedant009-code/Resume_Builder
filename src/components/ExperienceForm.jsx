@@ -1,92 +1,102 @@
 "use client";
 
+import { useResumeData } from "@/context/ResumeDataContext";
 import { useStepper } from "@/context/ResumeStepperContext";
 
 export default function ExperienceForm() {
+  const { resumeData, setResumeData } = useResumeData();
   const { nextStep, prevStep } = useStepper();
 
+  const exp = resumeData.experience?.[0] || {
+    title: "",
+    company: "",
+    duration: "",
+    bullets: [""],
+  };
+
+  const update = (field, value) => {
+    setResumeData(prev => ({
+      ...prev,
+      experience: [
+        {
+          ...(prev.experience?.[0] || {}),
+          [field]: value,
+        },
+      ],
+    }));
+  };
+
+  const updateBullet = (index, value) => {
+    const bullets = [...(exp.bullets || [])];
+    bullets[index] = value;
+    update("bullets", bullets);
+  };
+
+  const addBullet = () => {
+    update("bullets", [...(exp.bullets || []), ""]);
+  };
+
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm">
-      <h2 className="text-xl font-semibold mb-6">Work Experience</h2>
+    <div className="bg-white rounded-xl p-6">
+      <h2 className="font-semibold mb-4">Work Experience</h2>
 
-      {/* Experience Card */}
-      <div className="border rounded-xl p-6 mb-6">
-        <div className="grid grid-cols-2 gap-x-6 gap-y-5">
+      <div className="grid grid-cols-2 gap-4">
+        <input
+          className="input"
+          placeholder="Job Title"
+          value={exp.title || ""}
+          onChange={e => update("title", e.target.value)}
+        />
 
-          {/* Job Title */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Job Title
-            </label>
-            <input
-              className="input"
-              placeholder="Software Engineer"
-            />
-          </div>
+        <input
+          className="input"
+          placeholder="Company"
+          value={exp.company || ""}
+          onChange={e => update("company", e.target.value)}
+        />
 
-          {/* Company */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Company
-            </label>
-            <input
-              className="input"
-              placeholder="Tech Corp"
-            />
-          </div>
-
-          {/* Duration */}
-          <div className="col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Duration
-            </label>
-            <input
-              className="input max-w-sm"
-              placeholder="Jan 2022 - Present"
-            />
-          </div>
-
-          {/* Key Responsibilities */}
-          <div className="col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Key Responsibilities
-            </label>
-            <textarea
-              className="input h-32 resize-none"
-              placeholder="• Developed and maintained web applications..."
-            />
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className="mt-4 space-y-3">
-          <button className="text-sm text-indigo-600">
-            + Add Bullet Point
-          </button>
-
-          <button className="text-sm text-red-500 flex items-center gap-1">
-            ✕ Remove
-          </button>
-        </div>
+        <input
+          className="input col-span-2"
+          placeholder="Duration (e.g. Jan 2022 – Present)"
+          value={exp.duration || ""}
+          onChange={e => update("duration", e.target.value)}
+        />
       </div>
 
-      {/* Add Experience */}
-      <button className="w-full border-2 border-dashed rounded-xl py-4 text-sm text-gray-600 hover:bg-gray-50">
-        + Add Experience
-      </button>
+      <div className="mt-4">
+        <label className="text-sm font-medium">
+          Responsibilities
+        </label>
 
-      {/* Bottom Navigation */}
-      <div className="flex justify-between mt-8">
+        {(exp.bullets || []).map((bullet, i) => (
+          <textarea
+            key={i}
+            className="input mt-2 h-24"
+            placeholder="• Built scalable frontend features"
+            value={bullet || ""}
+            onChange={e => updateBullet(i, e.target.value)}
+          />
+        ))}
+
+        <button
+          type="button"
+          onClick={addBullet}
+          className="text-indigo-600 text-sm mt-2"
+        >
+          + Add Bullet
+        </button>
+      </div>
+
+      <div className="flex justify-between mt-6">
         <button
           onClick={prevStep}
-          className="border px-6 py-2 rounded-lg text-sm"
+          className="border px-4 py-2 rounded"
         >
           ← Back
         </button>
-
         <button
           onClick={nextStep}
-          className="bg-indigo-600 text-white px-6 py-2 rounded-lg text-sm"
+          className="bg-indigo-600 text-white px-6 py-2 rounded"
         >
           Next →
         </button>

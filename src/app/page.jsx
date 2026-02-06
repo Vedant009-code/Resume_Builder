@@ -11,7 +11,7 @@ export default function Home (){
 return(
   <div>
       <section className="bg-white">
-  <div className="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+  <div className="max-w-6xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
 
     {/* Left Content */}
     <div>
@@ -61,7 +61,8 @@ return(
         </div>
 
         {/* Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
           <FeatureCard
             icon={<FileText size={22} />}
@@ -79,13 +80,13 @@ return(
             iconColor="text-green-600"
           />
 
-          <FeatureCard
+          {/*<FeatureCard
             icon={<Users size={22} />}
             title="Smart Shortlisting"
             desc="AI-powered candidate matching based on job requirements"
             iconBg="bg-purple-100"
             iconColor="text-purple-600"
-          />
+          />*/}
 
           <FeatureCard
             icon={<BarChart3 size={22} />}
@@ -100,7 +101,7 @@ return(
 </section>
 
 
-<section className="bg-white pt- pb-24">
+<section className="bg-white pt-20 pb-20">
 
 <div className="max-w-7xl mx-auto px-9">
 
@@ -154,11 +155,11 @@ return(
         </div>
 
         <h3 className="text-[18px] font-semibold text-gray-900 mb-3">
-          Download / Shortlist
+          Download 
         </h3>
 
         <p className="text-[14px] text-gray-600 leading-relaxed max-w-xs mx-auto">
-          Download your resume or use our AI shortlister to find the best candidates
+          Download your resume 
         </p>
       </div>
 
