@@ -37,10 +37,11 @@ export default function ExperienceForm() {
   };
 
   return (
-    <div className="bg-white rounded-xl p-6">
+    <div className="bg-white rounded-xl p-4 md:p-6">
       <h2 className="font-semibold mb-4">Work Experience</h2>
 
-      <div className="grid grid-cols-2 gap-4">
+      {/* INPUT GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input
           className="input"
           placeholder="Job Title"
@@ -56,13 +57,14 @@ export default function ExperienceForm() {
         />
 
         <input
-          className="input col-span-2"
+          className="input md:col-span-2"
           placeholder="Duration (e.g. Jan 2022 – Present)"
           value={exp.duration || ""}
           onChange={e => update("duration", e.target.value)}
         />
       </div>
 
+      {/* RESPONSIBILITIES */}
       <div className="mt-4">
         <label className="text-sm font-medium">
           Responsibilities
@@ -71,7 +73,7 @@ export default function ExperienceForm() {
         {(exp.bullets || []).map((bullet, i) => (
           <textarea
             key={i}
-            className="input mt-2 h-24"
+            className="input mt-2 h-20 md:h-24"
             placeholder="• Built scalable frontend features"
             value={bullet || ""}
             onChange={e => updateBullet(i, e.target.value)}
@@ -87,16 +89,17 @@ export default function ExperienceForm() {
         </button>
       </div>
 
-      <div className="flex justify-between mt-6">
+      {/* ACTIONS */}
+      <div className="flex flex-col-reverse md:flex-row md:justify-between gap-3 mt-6">
         <button
           onClick={prevStep}
-          className="border px-4 py-2 rounded"
+          className="border px-4 py-2 rounded w-full md:w-auto"
         >
           ← Back
         </button>
         <button
           onClick={nextStep}
-          className="bg-indigo-600 text-white px-6 py-2 rounded"
+          className="bg-indigo-600 text-white px-6 py-2 rounded w-full md:w-auto"
         >
           Next →
         </button>

@@ -19,18 +19,15 @@ export default function ResumeBuilderPage() {
         <div className="min-h-screen bg-gray-100">
 
           {/* HEADER */}
-          <header className="flex items-center justify-between px-6 py-4 bg-white border-b">
-           {/*<a
-              href="/dashboard"
-              className="text-sm text-gray-600 hover:text-black"
-            >
-              ← Back to Dashboard
-            </a>*/}
-
+          <header className="flex items-center justify-between px-4 md:px-6 py-4 bg-white border-b">
             <h2 className="font-semibold">Resume Builder</h2>
 
             <button
-              onClick={() => setShowPreview(prev => !prev)}
+              onClick={() =>
+                window.innerWidth < 1024
+                  ? setShowFullPreview(true)
+                  : setShowPreview(prev => !prev)
+              }
               className="bg-black text-white px-4 py-2 rounded-lg text-sm"
             >
               {showPreview ? "Hide Preview" : "Live Preview"}
@@ -38,17 +35,22 @@ export default function ResumeBuilderPage() {
           </header>
 
           {/* MAIN CONTENT */}
-          <div className="grid grid-cols-12 gap-6 p-6">
+          <div className="grid grid-cols-12 gap-6 p-4 md:p-6">
 
             {/* LEFT: FORM */}
-            <div className={showPreview ? "col-span-7" : "col-span-12"}>
+            <div
+              className={`
+                col-span-12
+                ${showPreview ? "lg:col-span-7" : ""}
+              `}
+            >
               <Stepper />
               <StepContent setShowFullPreview={setShowFullPreview} />
             </div>
 
-            {/* RIGHT: SIDE PREVIEW */}
+            {/* RIGHT: SIDE PREVIEW (DESKTOP ONLY) */}
             {showPreview && (
-              <div className="col-span-5">
+              <div className="hidden lg:block lg:col-span-5">
                 <ResumePreview />
               </div>
             )}
@@ -59,9 +61,9 @@ export default function ResumeBuilderPage() {
         {/* FULL SCREEN PREVIEW MODAL */}
         {showFullPreview && (
           <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center">
-            <div className="bg-gray-100 w-[95%] h-[95%] rounded-xl overflow-hidden">
+            <div className="bg-gray-100 w-full h-full lg:w-[95%] lg:h-[95%] rounded-none lg:rounded-xl overflow-hidden">
 
-              <div className="flex justify-between items-center px-6 py-3 bg-white border-b">
+              <div className="flex justify-between items-center px-4 md:px-6 py-3 bg-white border-b">
                 <h2 className="font-semibold">Resume Preview</h2>
                 <button
                   onClick={() => setShowFullPreview(false)}
@@ -71,8 +73,8 @@ export default function ResumeBuilderPage() {
                 </button>
               </div>
 
-              <div className="p-6 h-[calc(100%-64px)] overflow-auto">
-                <div className="max-w-4xl mx-auto">
+              <div className="p-4 md:p-6 h-[calc(100%-64px)] overflow-auto">
+                <div className="max-w-4xl mx-auto scale-95 md:scale-100 origin-top">
                   <ResumePreview />
                 </div>
               </div>

@@ -11,26 +11,32 @@ import OthersForm from "@/components/OthersForm";
 export default function StepContent({ setShowFullPreview }) {
   const { currentStep } = useStepper();
 
-  switch (currentStep) {
-    case 0:
-      return <PersonalInfoForm />;
+  return (
+    <div className="w-full mt-4 md:mt-6">
+      {(() => {
+        switch (currentStep) {
+          case 0:
+            return <PersonalInfoForm />;
 
-    case 1:
-      return <EducationForm />;
+          case 1:
+            return <EducationForm />;
 
-    case 2:
-      return <ExperienceForm />;
+          case 2:
+            return <ExperienceForm />;
 
-    case 3:
-      return <ProjectsForm />;
+          case 3:
+            return <ProjectsForm />;
 
-    case 4:
-      return <SkillsForm />;
+          case 4:
+            return <SkillsForm />;
 
-    case 5:
-      return <OthersForm setShowFullPreview={setShowFullPreview} />;
+          case 5:
+            return <OthersForm setShowFullPreview={setShowFullPreview} />;
 
-    default:
-      return null;
-  }
+          default:
+            return null;
+        }
+      })()}
+    </div>
+  );
 }
