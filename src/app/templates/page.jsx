@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function TemplatesPage() {
   return (
-    <div className="max-w-7xl mx-auto px-8 py-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
       <h1 className="text-2xl font-semibold mb-2">
         Resume Templates
       </h1>
@@ -15,14 +15,15 @@ export default function TemplatesPage() {
         Choose from ATS-optimized and professional resume templates
       </p>
 
-      <div className="grid grid-cols-4 gap-6">
+      {/* RESPONSIVE GRID */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {templates.map(template => (
           <div
             key={template.id}
             className="border rounded-xl overflow-hidden bg-white"
           >
-            {/* PREVIEW (HEIGHT IS IMPORTANT) */}
-            <div className="h-48 bg-gray-50">
+            {/* PREVIEW */}
+            <div className="h-40 sm:h-48 bg-gray-50">
               <TemplatePreview templateId={template.id} />
             </div>
 
@@ -44,9 +45,7 @@ export default function TemplatesPage() {
                 {template.description}
               </p>
 
-              <Link
-                href={`/resume-builder?template=${template.id}`}
-              >
+              <Link href={`/resume-builder?template=${template.id}`}>
                 <button className="mt-3 w-full bg-indigo-600 text-white py-2 text-sm rounded">
                   Use Template
                 </button>
